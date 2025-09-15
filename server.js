@@ -26,10 +26,25 @@ app.use(cors({
 }));
 app.use(express.json());
 
+if (!process.env.MONGO_URI) {
+  console.error("Missing MONGO_URI in environment. Exiting.");
+  process.exit(1);
+}
+
+mongoose.connection.on("connecting", () => console.log("MongoDB: connecting..."));
+mongoose.connection.on("connected", () => console.log("MongoDB: connected ✅"));
+mongoose.connection.on("error", (err) => console.error("MongoDB connection error ❌", err));
+mongoose.connection.on("disconnected", () => console.warn("MongoDB: disconnected"));
+
 mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected ✅"))
-  .catch((err) => console.log("MongoDB connection error ❌", err));
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 10000,
+    socketTimeoutMS: 45000,
+    connectTimeoutMS: 10000
+  })
+  .catch((err) => {
+    console.error("Initial MongoDB connect failed ❌", err);
+  });
 
 app.get("/", (_req, res) => res.send("Backend is running 🚀"));
 
