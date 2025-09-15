@@ -12,8 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "https://task-management-application-frontend.vercel.app"
+  "https://task-management-application-fronten.vercel.app"
 ];
 
 app.use(cors({
