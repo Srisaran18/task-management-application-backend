@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: "http://localhost:3000", credentials: false }));
+app.use(cors({ origin: ["http://localhost:3000", "task-management-application-fronten.vercel.app"], credentials: false }));
 app.use(express.json());
 
 mongoose
